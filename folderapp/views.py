@@ -37,8 +37,8 @@ def index(request):
 @api_view(['DELETE', 'PUT'])
 @permission_classes([IsAuthenticated])
 def delete_folder(request, code):
+    current_user = request.user
     if request.method == "DELETE":
-        current_user = request.user
         try:
             del_folder = Folder.objects.get(code=code)
             if del_folder.user == current_user:
@@ -48,20 +48,39 @@ def delete_folder(request, code):
                 return Response(status=401)
         except Folder.DoesNotExist:
             return Response(status=404)
+
+
     if request.method == "PUT":
-        try:
-            visible = request.data.get('visible')
-            return Response(status=200)
-            print(visible)
-        except:
+        visible = request.data.get('visible')
+        print(visible)
+        who_upload = request.data.get("anyone_upload")
+        print(who_upload)
+        if visible == "" and who_upload == True or who_upload == False:
+            try:
+                visible_update = Folder.objects.get(code=code)
+                if visible_update.user == current_user:
+                    visible_update.anyone_upload = who_upload
+                    visible_update.save()
+                    return Response(status=200) 
+                else:
+                    return Response(status=404)
+            except:
+                return Response(status=204)
+        
+        if who_upload == "" and visible == True or visible == False:
+            try:
+                upload_update = Folder.objects.get(code=code)
+                if upload_update.user == current_user:
+                    upload_update.visible = visible
+                    upload_update.save()
+                    return Response(status=200) 
+                else:
+                    return Response(status=404)
+            except:
+                return Response(status=204)
+        else:
             return Response(status=404)
-            
-        try:
-            who_upload = request.data.get("anyone_upload")
-            return Response(status=200)
-            print(who_upload, "hello")
-        except:
-            return Response(status=404)
+
             
 
 
