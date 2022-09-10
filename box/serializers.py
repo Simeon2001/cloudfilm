@@ -16,4 +16,4 @@ class FileSerial(serializers.ModelSerializer):
 
     class Meta:
         model = FileStorage
-        fields = ["id","files_name", "files", "image_description", "date_created",]
+        fields = ["id", "idd", "files_name", "files", "image_description", "date_created",]

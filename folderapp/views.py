@@ -12,13 +12,16 @@ from rest_framework.authentication import TokenAuthentication
 from box.serializers import FolderSerial
 from box.hash import hashes
 
-# Create your views here.
 
+# To create album and display all album created
 @api_view(["GET",'POST'])
 @permission_classes([IsAuthenticated])
 # @authentication_classes([TokenAuthentication])
 def index(request):
     user = request.user
+
+
+# Post request to create new image album    
     if request.method == "POST":
         folder_name = request.data.get("name")
         code = hashes()
@@ -28,16 +31,23 @@ def index(request):
                                     code=code, anyone_upload=anyone_upload)
         serializer_class = FolderSerial(data)
         return Response(serializer_class.data, status=status.HTTP_201_CREATED)
+    
+    
+# Get request to display all image album created    
     else:
         folder = Folder.objects.filter(user=user)
         serializer_class = FolderSerial(folder,many=True)
         return Response(serializer_class.data, status=status.HTTP_200_OK)
 
 
+# Function to delete and update image album
 @api_view(['DELETE', 'PUT'])
 @permission_classes([IsAuthenticated])
 def delete_folder(request, code):
     current_user = request.user
+
+
+# Delete request to delete an image album    
     if request.method == "DELETE":
         try:
             del_folder = Folder.objects.get(code=code)
@@ -50,6 +60,7 @@ def delete_folder(request, code):
             return Response(status=404)
 
 
+# Put request to update image album visibility and who can upload
     if request.method == "PUT":
         visible = request.data.get('visible')
         print(visible)
