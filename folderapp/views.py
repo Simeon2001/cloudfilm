@@ -11,6 +11,7 @@ from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from box.serializers import FolderSerial
 from box.hash import hashes
+from folderapp import resp
 
 
 # To create album and display all album created
@@ -53,11 +54,11 @@ def delete_folder(request, code):
             del_folder = Folder.objects.get(code=code)
             if del_folder.user == current_user:
                 del_folder.delete()
-                return Response(status=200) 
+                return resp.it_ok("album deleted")
             else:
-                return Response(status=401)
+                return resp.not_yours("not your account")
         except Folder.DoesNotExist:
-            return Response(status=404)
+            return resp.not_found("album not found")
 
 
 # Put request to update image album visibility and who can upload
@@ -72,11 +73,11 @@ def delete_folder(request, code):
                 if visible_update.user == current_user:
                     visible_update.anyone_upload = who_upload
                     visible_update.save()
-                    return Response(status=200) 
+                    return resp.it_ok({"anyone_upload":who_upload})
                 else:
-                    return Response(status=404)
+                    return resp.not_yours("not your account")
             except:
-                return Response(status=204)
+                return resp.not_found("album not found")
         
         if who_upload == "" and visible == True or visible == False:
             try:
@@ -84,13 +85,13 @@ def delete_folder(request, code):
                 if upload_update.user == current_user:
                     upload_update.visible = visible
                     upload_update.save()
-                    return Response(status=200) 
+                    return resp.it_ok({"visible":visible})
                 else:
-                    return Response(status=404)
+                    return resp.not_yours("not your account")
             except:
-                return Response(status=204)
+                return resp.not_found("album not found")
         else:
-            return Response(status=404)
+            return resp.bad("wrong data")
 
             
 
