@@ -9,38 +9,67 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('box', '0003_file_storage_anyone_upload'),
+        ("box", "0003_file_storage_anyone_upload"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='FileStorage',
+            name="FileStorage",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('files', models.ImageField(upload_to='store/%Y/%m/%d')),
-                ('image_description', models.TextField(default='image', max_length=10000)),
-                ('date_created', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("files", models.ImageField(upload_to="store/%Y/%m/%d")),
+                (
+                    "image_description",
+                    models.TextField(default="image", max_length=10000),
+                ),
+                ("date_created", models.DateTimeField(auto_now_add=True)),
             ],
         ),
         migrations.CreateModel(
-            name='UserStorageVolume',
+            name="UserStorageVolume",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('volume_in_kb', models.BigIntegerField(default=0)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("volume_in_kb", models.BigIntegerField(default=0)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='folder',
-            name='anyone_upload',
+            model_name="folder",
+            name="anyone_upload",
             field=models.BooleanField(default=True),
         ),
         migrations.DeleteModel(
-            name='file_storage',
+            name="file_storage",
         ),
         migrations.AddField(
-            model_name='filestorage',
-            name='folder',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='folders', to='box.folder'),
+            model_name="filestorage",
+            name="folder",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="folders",
+                to="box.folder",
+            ),
         ),
     ]

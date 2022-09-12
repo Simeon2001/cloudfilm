@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('box', '0006_rename_files_image_filestorage_files_name'),
+        ("box", "0006_rename_files_image_filestorage_files_name"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='userstoragevolume',
-            name='volume_in_kb',
+            model_name="userstoragevolume",
+            name="volume_in_kb",
             field=models.BigIntegerField(default=31457280),
         ),
     ]

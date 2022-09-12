@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('box', '0008_alter_folder_code'),
+        ("box", "0008_alter_folder_code"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='filestorage',
-            name='idd',
-            field=models.CharField(default='vxc48sx7f', max_length=30),
+            model_name="filestorage",
+            name="idd",
+            field=models.CharField(default="vxc48sx7f", max_length=30),
         ),
     ]

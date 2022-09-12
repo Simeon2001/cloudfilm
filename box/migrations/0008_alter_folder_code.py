@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('box', '0007_alter_userstoragevolume_volume_in_kb'),
+        ("box", "0007_alter_userstoragevolume_volume_in_kb"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='folder',
-            name='code',
+            model_name="folder",
+            name="code",
             field=models.CharField(max_length=30),
         ),
     ]
