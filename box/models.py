@@ -1,11 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import User
+from account.models import User
 
 # Create your models here.
 
 
 class UserStorageVolume(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.fieldName = models.OneToOneField(User, on_delete=models.CASCADE)
     volume_in_kb = models.BigIntegerField(default=31457280)
 
 

@@ -22,6 +22,8 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("box.urls")),
     path("api/", include("folderapp.urls")),
+    path("api/", include("account.urls")),
+    path("api/", include("apikey.urls")),
 ]
 
 if settings.DEBUG:

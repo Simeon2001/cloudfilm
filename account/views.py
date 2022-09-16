@@ -10,40 +10,31 @@ from rest_framework.decorators import (
     permission_classes,
     authentication_classes,
 )
-from django.contrib.auth.models import User
+from account.models import User
 from django.contrib.auth import get_user_model
-from authr.serializers import UserSerializer
+from account.serializers import UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
+from folderapp import resp
 
 UserModel = get_user_model()
 
 
 @api_view(["post"])
 @permission_classes([AllowAny])
-def UserCreateView(request):
+def usercreateview(request):
     if request.method == "POST":
-        username = request.data.get("username")
+        name = request.data.get("name")
         password = request.data.get("password")
-        last_name = request.data.get("last_name")
-        first_name = request.data.get("first_name")
         email = request.data.get("email")
         if (
-            UserModel.objects.filter(username__icontains=username).first()
-            or UserModel.objects.filter(email=email).first()
+            UserModel.objects.filter(email=email).first()
         ):
-            return Response(
-                {
-                    "status": False,
-                    "message": "username or email address already taken by another user ",
-                },
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
+            return resp.bad("email address already taken by another user")
+                
         else:
             data = {
-                "first_name": first_name,
-                "last_name": last_name,
+                "name": name,
                 "email": email,
-                "username": username,
                 "password": password,
             }
             serializer_class = UserSerializer(data=data)
@@ -55,25 +46,17 @@ def UserCreateView(request):
 @api_view(["post"])
 def authr_token(request):
     if request.method == "POST":
-        account_name = request.data.get("username")
+        email = request.data.get("email")
         password = request.data.get("password")
         try:
-            log = authenticate(account_name=account_name, password=password)
+            log = authenticate(email=email, password=password)
             refresh = RefreshToken.for_user(log)
             return Response(
                 {
-                    "responsecode": 200,
-                    "success": True,
+                    "status": True,
                     "accesstoken": str(refresh.access_token),
                 },
                 status=status.HTTP_200_OK,
             )
         except AttributeError:
-            return Response(
-                {
-                    "responsecode": 401,
-                    "success": False,
-                    "message": "Please enter the correct username and password",
-                },
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
+            return resp.bad("Please enter the correct email address and password")
