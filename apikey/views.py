@@ -11,6 +11,7 @@ from .models import Keys
 from folderapp import resp
 from .key_gen import all_key
 
+
 @api_view(["get", "put"])
 @permission_classes([IsAuthenticated])
 def get_apikey(request):
@@ -30,7 +31,8 @@ def get_apikey(request):
                     "status": True,
                     "secret_key": up_apikey[1],
                     "public_key": up_apikey[0],
-                }, status=status.HTTP_201_CREATED,
+                },
+                status=status.HTTP_201_CREATED,
             )
         except:
             return resp.not_found("user not found")
@@ -43,9 +45,8 @@ def get_apikey(request):
                     "status": True,
                     "secret_key": keys.private_key,
                     "public_key": keys.public_key,
-                }, status=status.HTTP_200_OK,
+                },
+                status=status.HTTP_200_OK,
             )
         except:
             return resp.not_found("user not found")
-
-

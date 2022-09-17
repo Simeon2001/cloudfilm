@@ -8,6 +8,9 @@ class UserStorageVolume(models.Model):
     user = models.fieldName = models.OneToOneField(User, on_delete=models.CASCADE)
     volume_in_kb = models.BigIntegerField(default=31457280)
 
+    def __str__(self):
+        return "{0} ------ {1}".format(self.volume_in_kb, self.user.email)
+
 
 class Folder(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

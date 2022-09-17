@@ -6,28 +6,28 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('apikey', '0004_alter_keys_private_key_alter_keys_public_key'),
+        ("apikey", "0004_alter_keys_private_key_alter_keys_public_key"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='keys',
-            name='enc_private_key',
+            model_name="keys",
+            name="enc_private_key",
             field=models.TextField(max_length=250),
         ),
         migrations.AlterField(
-            model_name='keys',
-            name='enc_public_key',
+            model_name="keys",
+            name="enc_public_key",
             field=models.TextField(max_length=250),
         ),
         migrations.AlterField(
-            model_name='keys',
-            name='private_key',
+            model_name="keys",
+            name="private_key",
             field=models.CharField(max_length=53),
         ),
         migrations.AlterField(
-            model_name='keys',
-            name='public_key',
+            model_name="keys",
+            name="public_key",
             field=models.CharField(max_length=53),
         ),
     ]

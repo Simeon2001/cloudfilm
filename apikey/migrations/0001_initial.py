@@ -15,14 +15,28 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Keys',
+            name="Keys",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('public_key', models.CharField(max_length=43)),
-                ('private_key', models.CharField(max_length=43)),
-                ('enc_ptivate_key', models.TextField(max_length=200)),
-                ('enc_private_key', models.TextField(max_length=200)),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("public_key", models.CharField(max_length=43)),
+                ("private_key", models.CharField(max_length=43)),
+                ("enc_ptivate_key", models.TextField(max_length=200)),
+                ("enc_private_key", models.TextField(max_length=200)),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

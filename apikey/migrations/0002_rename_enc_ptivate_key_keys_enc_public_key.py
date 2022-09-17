@@ -6,13 +6,13 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('apikey', '0001_initial'),
+        ("apikey", "0001_initial"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='keys',
-            old_name='enc_ptivate_key',
-            new_name='enc_public_key',
+            model_name="keys",
+            old_name="enc_ptivate_key",
+            new_name="enc_public_key",
         ),
     ]

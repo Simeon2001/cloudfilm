@@ -26,11 +26,9 @@ def usercreateview(request):
         name = request.data.get("name")
         password = request.data.get("password")
         email = request.data.get("email")
-        if (
-            UserModel.objects.filter(email=email).first()
-        ):
+        if UserModel.objects.filter(email=email).first():
             return resp.bad("email address already taken by another user")
-                
+
         else:
             data = {
                 "name": name,

@@ -18,18 +18,12 @@ class UserManager(BaseUserManager):
             raise ValueError(_("User must have a name"))
         if password is None:
             raise ValueError(_("Users must have a Password"))
-        user = self.model(
-            email=self.normalize_email(email),
-            name=name,
-            **extra_fields
-        )
+        user = self.model(email=self.normalize_email(email), name=name, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(
-        self, email, name, password=None, **extra_fields
-    ):
+    def create_superuser(self, email, name, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
         extra_fields.setdefault("is_active", True)
@@ -46,7 +40,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     # User Basic Details
     email = models.EmailField(_("Email"), max_length=100, unique=True, db_index=True)
     name = models.CharField(_("name"), max_length=15)
-    
+
     # User status
     is_seller = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

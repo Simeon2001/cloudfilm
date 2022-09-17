@@ -1,6 +1,7 @@
 from django.db import models
 from account.models import User
 
+
 class Keys(models.Model):
     user = models.fieldName = models.OneToOneField(User, on_delete=models.CASCADE)
     public_key = models.CharField(max_length=53, blank=False)
@@ -10,4 +11,3 @@ class Keys(models.Model):
 
     def __str__(self):
         return self.public_key
-
