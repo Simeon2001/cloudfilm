@@ -24,7 +24,7 @@ def it_ok(msg):
 
 
 def forbidden(msg):
-    return (
+    return Response(
         {"status": True, "message": msg},
         status.HTTP_403_FORBIDDEN,
     )
