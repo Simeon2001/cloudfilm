@@ -25,10 +25,8 @@ def upload_file(request, code):
     try:
         folder = Folder.objects.get(code=code)
         update_volume = UserStorageVolume.objects.get(user=folder.user)
-        cloud_volume, created = UserStorageVolume.objects.get_or_create(
-            user=folder.user
-        )
-        print(cloud_volume.volume_in_kb)
+
+        print(update_volume.volume_in_kb)
 
         # Post request: to add new image to album
         if request.method == "POST":
@@ -42,10 +40,10 @@ def upload_file(request, code):
 
                     img = Image.open(image)
                     byte_size = int(len(img.fp.read()))
-                    if byte_size > int(cloud_volume.volume_in_kb):
+                    if byte_size > int(update_volume.volume_in_kb):
                         return resp.forbidden("insufficient cloud space")
                     else:
-                        new_volume = int(cloud_volume.volume_in_kb) - byte_size
+                        new_volume = int(update_volume.volume_in_kb) - byte_size
                         idd = id_hash(image.name, folder.id)
                         print(byte_size)
                         print(new_volume)
@@ -100,3 +98,20 @@ def delete_file(request, code, idd):
             return resp.not_yours("not your account")
     except:
         return resp.not_found("image or album not found")
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def storage_metrics(request):
+    current_user = request.user
+    get_volume = UserStorageVolume.objects.get(user=current_user)
+    space_in_mb = int(get_volume.volume_in_kb) / (1024 * 1024)
+    return Response(
+        {"status":True,
+        "space_in_kb": get_volume.volume_in_kb,
+        "space_in_mb": space_in_mb,
+        }
+    )
+        
+    
+
