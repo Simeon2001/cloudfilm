@@ -47,6 +47,7 @@ def upload_file(request, code):
                         idd = id_hash(image.name, folder.id)
                         print(byte_size)
                         print(new_volume)
+                        
                         descrpt = "just a image"
                         print(img.verify())
                         print(image.name)
