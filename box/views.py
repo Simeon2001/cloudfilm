@@ -14,6 +14,7 @@ from rest_framework.parsers import FileUploadParser
 from PIL import Image
 from .idd_hash import id_hash
 from folderapp import resp
+from box.uploader import read_image
 
 
 # File uploading,displaying images function
@@ -47,8 +48,8 @@ def upload_file(request, code):
                         idd = id_hash(image.name, folder.id)
                         print(byte_size)
                         print(new_volume)
-                        
-                        descrpt = "just a image"
+
+                        descrpt = read_image(img)
                         print(img.verify())
                         print(image.name)
 
