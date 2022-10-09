@@ -1,0 +1,36 @@
+{
+  "name": "api_gateway",
+  "version": "1.0.0",
+  "description": "api gateway for developer want to use only the web API",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Simeon2001/cloudfilm.git"
+  },
+  "keywords": [
+    "API",
+    "photo",
+    "storage",
+    "google",
+    "album"
+  ],
+  "author": "ciscoquan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Simeon2001/cloudfilm/issues"
+  },
+  "homepage": "https://github.com/Simeon2001/cloudfilm#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1",
+    "nodemon": "^2.0.20",
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.24.0",
+    "sequelize-cli": "^6.5.1"
+  }
+}
