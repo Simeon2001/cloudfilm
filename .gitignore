@@ -13,5 +13,5 @@ post.go
 main.exe
 auth.json
 box/jsondat.py
-trash.go
-
+thrash.go
+node_modules
