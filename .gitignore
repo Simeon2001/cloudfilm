@@ -1,5 +1,4 @@
 *.pyc
-
 db.sqlite3
 /media
 *.png
@@ -15,3 +14,4 @@ auth.json
 box/jsondat.py
 thrash.go
 node_modules
+index.txt
