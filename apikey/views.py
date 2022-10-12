@@ -23,22 +23,34 @@ def get_apikey(request):
         try:
             update_keys = Keys.objects.get(user=current_user)
 
-            putkey(update_keys.enc_private_key, up_apikey[3], up_apikey[2])
+            key_status = putkey(update_keys.enc_private_key, up_apikey[3], up_apikey[2])
 
             update_keys.public_key = up_apikey[0]
             update_keys.private_key = up_apikey[1]
             update_keys.enc_public_key = up_apikey[2]
             update_keys.enc_private_key = up_apikey[3]
-            update_keys.save()
+            
+            if key_status == 200:
+                update_keys.save()
 
-            return Response(
-                {
-                    "status": True,
-                    "secret_key": up_apikey[1],
-                    "public_key": up_apikey[0],
-                },
-                status=status.HTTP_201_CREATED,
-            )
+                return Response(
+                    {
+                        "status": True,
+                        "secret_key": up_apikey[1],
+                        "public_key": up_apikey[0],
+                    },
+                    status=status.HTTP_201_CREATED,
+                )
+
+            else:
+                return Response(
+                    {
+                        "status": False,
+                        "msg": "something is wrong",
+                    },
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                )
+
         except:
             return resp.not_found("user not found")
 
