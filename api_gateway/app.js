@@ -45,5 +45,9 @@ app.post('/api/savekeys', (req, res) => {
     views.savekey(req, res, db);  
 });
 
+app.put('/api/savekeys', (req, res) => {
+    views.putkey(req, res, db);
+});
+
 
 app.listen(9000, () => console.log("server ready"));
