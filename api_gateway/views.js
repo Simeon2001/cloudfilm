@@ -42,7 +42,25 @@ const postviewimage = async (req,res, hashes, db) => {
         return res.status(200).json({"status": true, "message": token});
     }
 }
+
+
+const putkey = async(req, res, db) => {
+    if (req.headers.authorization == process.env.AUTH_TOKEN){
+        const enc_pri_key  = req.body.oldpriv_key;
+        const enc_new_pri_key  = req.body.enc_priv_key;
+        const enc_new_pub_key  = req.body.enc_pub_key;
+        const enc_newkeys = await db.findOne({ 
+            where: { enc_private: enc_pri_key}});
+        enc_newkeys.enc_private = enc_new_pri_key;
+        enc_newkeys.enc_public = enc_new_pub_key;
+        await enc_newkeys.save();
+        return res.status(200).json({"status": true, "message": "saved"});
+    }else{
+        return res.status(406).json({"status": false,"message": "not authenticated"});
+    }
+}
 module.exports = {
     savekey:savekey,
-    viewimage:viewimage
+    viewimage:viewimage,
+    putkey:putkey
 }
