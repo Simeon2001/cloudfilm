@@ -10,6 +10,7 @@ from rest_framework.decorators import (
 from .models import Keys
 from folderapp import resp
 from .key_gen import all_key
+from apikey.microreq import putkey
 
 
 @api_view(["get", "put"])
@@ -21,11 +22,15 @@ def get_apikey(request):
         up_apikey = all_key(user_email)
         try:
             update_keys = Keys.objects.get(user=current_user)
+
+            putkey(update_keys.enc_private_key, up_apikey[3], up_apikey[2])
+
             update_keys.public_key = up_apikey[0]
             update_keys.private_key = up_apikey[1]
             update_keys.enc_public_key = up_apikey[2]
             update_keys.enc_private_key = up_apikey[3]
             update_keys.save()
+
             return Response(
                 {
                     "status": True,
