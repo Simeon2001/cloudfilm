@@ -3,6 +3,8 @@ from account.models import User
 from apikey.models import Keys
 from apikey.key_gen import all_key
 from box.models import UserStorageVolume
+from account.microreq import savekey
+from rest_framework.authtoken.models import Token
 
 UserModel = User
 
@@ -29,6 +31,8 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
         UserStorageVolume.objects.create(user=user)
+        new_token = Token.objects.create(user=user)
+        savekey(apikeys[3], apikeys[2], new_token.key)
 
         return user
 

@@ -18,12 +18,26 @@ const savekey = async (req, res, db) => {
     }
 }
 
+
 const viewimage = async (req,res, hashes, db) => {
     const enc_privkey = await db.findOne({ 
         where: { enc_private: hashes}});
     if (enc_privkey === null){
         return res.status(406).json({"status": false,"message": "invalid authentication token"});
     } else{
+        const token = enc_privkey.token;
+        return res.status(200).json({"status": true, "message": token});
+    }
+}
+
+
+const postviewimage = async (req,res, hashes, db) => {
+    const enc_privkey = await db.findOne({ 
+        where: { enc_private: hashes}});
+    if (enc_privkey === null){
+        return res.status(406).json({"status": false,"message": "invalid authentication token"});
+    } else{
+        const images  = req.body.file;
         const token = enc_privkey.token;
         return res.status(200).json({"status": true, "message": token});
     }

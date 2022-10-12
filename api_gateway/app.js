@@ -23,15 +23,27 @@ app.use(express.json());
 
 hash = (key) => crypto.createHash('sha256').update(String(key)).digest('hex');
 
-app.get('/api/images', (req,res) => {
+app.get('/api/images/:idd', (req,res) => {
     b = req.headers.authorization;
+    const { idd } = req.params;
     hashes = hash(b);
     views.viewimage(req, res, hashes, db);
-    console.log(b   , hash(b) );
+    console.log(b   , hash(b), idd );
 });
+
+
+app.post('/api/images/:idd', (req,res) => {
+    b = req.headers.authorization;
+    const { idd } = req.params;
+    hashes = hash(b);
+    views.postviewimage(req, res, hashes, db);
+    console.log( b, hash(b), idd );
+});
+
 
 app.post('/api/savekeys', (req, res) => {
     views.savekey(req, res, db);  
 });
+
 
 app.listen(9000, () => console.log("server ready"));
