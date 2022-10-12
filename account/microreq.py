@@ -17,4 +17,4 @@ def savekey(enc_priv,enc_pub,token):
     data = {"pri_key":enc_priv, "pub_key":enc_pub, "token":token}
     data = json.dumps(data, indent=2)
     res = requests.post(url, headers=headers, data=data)
-    print(res.json(), res.status_code)
+    return res.status_code

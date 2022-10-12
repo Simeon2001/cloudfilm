@@ -19,4 +19,4 @@ def putkey(old_priv,enc_priv,enc_pub):
             "enc_pub_key":enc_pub}
     data = json.dumps(data, indent=2)
     res = requests.put(url, headers=headers, data=data)
-    print(res.status_code)
+    return (res.status_code)
