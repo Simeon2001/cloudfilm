@@ -6,6 +6,7 @@ require("dotenv").config({path: '../.env'})
 const sequelize = new Sequelize(process.env.POSTGRES_URL)
 const views = require('./views');
 
+
 try {
     sequelize.authenticate();
     console.log('connceted');
@@ -27,7 +28,7 @@ app.get('/api/images/:idd', (req,res) => {
     b = req.headers.authorization;
     const { idd } = req.params;
     hashes = hash(b);
-    views.viewimage(req, res, hashes, db);
+    views.viewimage(req, res, hashes, db, idd);
     console.log(b   , hash(b), idd );
 });
 
