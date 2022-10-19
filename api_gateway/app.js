@@ -5,6 +5,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 require("dotenv").config({path: '../.env'})
 const sequelize = new Sequelize(process.env.POSTGRES_URL)
 const views = require('./views');
+const fileupload = require('express-fileupload');
 
 
 try {
@@ -21,6 +22,8 @@ const db = require("./models")(sequelize,DataTypes);
 })();
 
 app.use(express.json());
+app.use(fileupload());
+
 
 hash = (key) => crypto.createHash('sha256').update(String(key)).digest('hex');
 
