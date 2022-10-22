@@ -5,8 +5,11 @@ const { Sequelize, DataTypes } = require('sequelize');
 require("dotenv").config({path: '../.env'})
 const sequelize = new Sequelize(process.env.POSTGRES_URL)
 const views = require('./views');
-const fileupload = require('express-fileupload');
+const multer = require('multer');
 
+app.use(express.json());
+const storage = multer.memoryStorage();
+const uploads = multer({storage});
 
 try {
     sequelize.authenticate();
@@ -21,9 +24,6 @@ const db = require("./models")(sequelize,DataTypes);
     db.sync();
 })();
 
-app.use(express.json());
-app.use(fileupload());
-
 
 hash = (key) => crypto.createHash('sha256').update(String(key)).digest('hex');
 
@@ -36,7 +36,7 @@ app.get('/api/images/:idd', (req,res) => {
 });
 
 
-app.post('/api/images/:idd', (req,res) => {
+app.post('/api/images/:idd', uploads.single('image'), (req, res) => {
     b = req.headers.authorization;
     const { idd } = req.params;
     hashes = hash(b);

@@ -1,3 +1,5 @@
+const axo = require('./axo');
+
 const savekey = async (req, res, db) => {
     if (req.headers.authorization == process.env.AUTH_TOKEN){
 
@@ -19,25 +21,49 @@ const savekey = async (req, res, db) => {
 }
 
 
-const viewimage = async (req,res, hashes, db) => {
+const viewimage = async (req,res, hashes, db, idd) => {
     const enc_privkey = await db.findOne({ 
         where: { enc_private: hashes}});
+
     if (enc_privkey === null){
         return res.status(406).json({"status": false,"message": "invalid authentication token"});
+    
     } else{
-        const token = enc_privkey.token;
-        return res.status(200).json({"status": true, "message": token});
+        const auth = "Token" + " " + enc_privkey.token;
+        const url = process.env.IMAGE_STORE + idd;
+
+        try {
+            const response = await axo.get(auth,url);
+
+        if (response.status == 200) {
+            return res.status(200).json(response.data);
+        }
+
+        } catch (err) {
+            if (err.response){
+                return res.status(404).json({"status":false,"message":"image album not found"});
+            } else if (err.request) {
+                return res.status(500).json({"status": false,"message": "internal server error"});
+            } else {
+                console.log("error");
+            }
+        }
+        
+        
     }
 }
 
 
-const postviewimage = async (req,res, hashes, db) => {
+const postviewimage = async (req,res, hashes, db, id) => {
     const enc_privkey = await db.findOne({ 
         where: { enc_private: hashes}});
     if (enc_privkey === null){
         return res.status(406).json({"status": false,"message": "invalid authentication token"});
-    } else{
-        const images  = req.body.file;
+    }
+    
+    else{
+        const files  = req.file.mimetype.split('/')[0];
+        console.log(files);
         const token = enc_privkey.token;
         return res.status(200).json({"status": true, "message": token});
     }
@@ -62,5 +88,6 @@ const putkey = async(req, res, db) => {
 module.exports = {
     savekey:savekey,
     viewimage:viewimage,
+    postviewimage:postviewimage,
     putkey:putkey
 }
