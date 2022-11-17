@@ -54,7 +54,7 @@ const viewimage = async (req,res, hashes, db, idd) => {
 }
 
 
-const postviewimage = async (req,res, hashes, db, id) => {
+const postviewimage = async (req,res, hashes, db, idd) => {
     if (!req.file){
         return res.status(400).json({"status": false, "message": "nothing was uploaded"});
     }
@@ -72,8 +72,9 @@ const postviewimage = async (req,res, hashes, db, id) => {
         img_base = img_buf.toString('base64')
         console.log(req.file.buffer)
         const token = "Token" + " " + enc_privkey.token;
-        const post_imgurl = 
-        const img_resp = axo.post(token, )
+        const post_imgurl = process.env.BASE_IMAGE_STORE + idd;
+        const data = {"baseimg":img_base}
+        const img_resp = axo.post(token, post_imgurl, JSON.stringify(data));
         return res.status(200).json({"status": true, "message": token});
     }
     

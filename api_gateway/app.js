@@ -47,7 +47,7 @@ app.post('/api/images/:idd', (req, res) => {
         b = req.headers.authorization;
         const { idd } = req.params;
         hashes = hash(b);
-        views.postviewimage(req, res, hashes, db);
+        views.postviewimage(req, res, hashes, db, idd);
         console.log( b, hash(b), idd );
     })
    
