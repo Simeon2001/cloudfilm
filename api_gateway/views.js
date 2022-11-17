@@ -55,18 +55,28 @@ const viewimage = async (req,res, hashes, db, idd) => {
 
 
 const postviewimage = async (req,res, hashes, db, id) => {
+    if (!req.file){
+        return res.status(400).json({"status": false, "message": "nothing was uploaded"});
+    }
     const enc_privkey = await db.findOne({ 
         where: { enc_private: hashes}});
     if (enc_privkey === null){
         return res.status(406).json({"status": false,"message": "invalid authentication token"});
     }
-    
+    const files  = req.file.mimetype.split('/')[0];
+    if (files != "image" | files === null ) {
+        return res.status(400).json({"status": false, "message": "upload an image"}); 
+    }
     else{
-        const files  = req.file.mimetype.split('/')[0];
-        console.log(files);
-        const token = enc_privkey.token;
+        img_buf = req.file.buffer
+        img_base = img_buf.toString('base64')
+        console.log(req.file.buffer)
+        const token = "Token" + " " + enc_privkey.token;
+        const post_imgurl = 
+        const img_resp = axo.post(token, )
         return res.status(200).json({"status": true, "message": token});
     }
+    
 }
 
 

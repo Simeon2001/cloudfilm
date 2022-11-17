@@ -10,6 +10,18 @@ const get = async (auth,url) => {
     return resp 
 }
 
+const post = async (auth,url,data) => {
+    const config = {
+        method: 'post',
+        url: url,
+        data: data,
+        headers: {'Authorization': auth},
+    }
+    let resp = await axios(config);
+    return resp
+}
+
 module.exports = {
-    get: get
+    get: get,
+    post: post
 }

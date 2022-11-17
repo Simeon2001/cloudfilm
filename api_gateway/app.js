@@ -10,6 +10,7 @@ const multer = require('multer');
 app.use(express.json());
 const storage = multer.memoryStorage();
 const uploads = multer({storage});
+const image_stream = uploads.single('imagez');
 
 try {
     sequelize.authenticate();
@@ -36,12 +37,20 @@ app.get('/api/images/:idd', (req,res) => {
 });
 
 
-app.post('/api/images/:idd', uploads.single('image'), (req, res) => {
-    b = req.headers.authorization;
-    const { idd } = req.params;
-    hashes = hash(b);
-    views.postviewimage(req, res, hashes, db);
-    console.log( b, hash(b), idd );
+app.post('/api/images/:idd', (req, res) => {
+    image_stream(req, res, (err) => {
+        if (err instanceof multer.MulterError){
+            return res.status(400).json({"status":false,"message":"invalid fieldname or error from your side"}); 
+        } else if (err) {
+            console.log(err);
+        }
+        b = req.headers.authorization;
+        const { idd } = req.params;
+        hashes = hash(b);
+        views.postviewimage(req, res, hashes, db);
+        console.log( b, hash(b), idd );
+    })
+   
 });
 
 
