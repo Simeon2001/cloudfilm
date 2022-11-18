@@ -69,13 +69,27 @@ const postviewimage = async (req,res, hashes, db, idd) => {
     }
     else{
         img_buf = req.file.buffer
+        img_name = req.file.originalname
         img_base = img_buf.toString('base64')
-        console.log(req.file.buffer)
         const token = "Token" + " " + enc_privkey.token;
         const post_imgurl = process.env.BASE_IMAGE_STORE + idd;
-        const data = {"baseimg":img_base}
-        const img_resp = axo.post(token, post_imgurl, JSON.stringify(data));
-        return res.status(200).json({"status": true, "message": token});
+        try {
+            const img_resp = await axo.post(token, post_imgurl,img_base,img_name);
+
+            if (img_resp.status == 202) {
+                return res.status(202).json(img_resp.data);
+            }
+
+        } catch (err) {
+            if (err.response){
+                return res.status(400).json({"status":false,"message":"image album not found"});
+            } else if (err.request) {
+                return res.status(500).json({"status": false,"message": "internal server error"});
+            } else {
+                console.log("error");
+            }
+        }
+        
     }
     
 }

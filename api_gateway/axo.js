@@ -10,14 +10,10 @@ const get = async (auth,url) => {
     return resp 
 }
 
-const post = async (auth,url,data) => {
-    const config = {
-        method: 'post',
-        url: url,
-        data: data,
-        headers: {'Authorization': auth},
-    }
-    let resp = await axios(config);
+const post = async (auth,url,data,name) => {
+    const config = {headers: {'Authorization': auth},};
+    up_data = {"imgbase":data,"imgname":name}
+    let resp = await axios.post(url,up_data,config);
     return resp
 }
 
