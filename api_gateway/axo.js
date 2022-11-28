@@ -1,5 +1,4 @@
 const axios = require("axios")
-
 const get = async (auth,url) => {
     const config = {
         method: 'get',
@@ -17,7 +16,21 @@ const post = async (auth,url,data,name) => {
     return resp
 }
 
+
+const img_post = async (data) => {
+    const key = process.env.AZURE_KEY
+    const azure_url = process.env.AZURE_URL
+    const config = {headers:{"Content-Type":"application/octet-stream", 
+                            "Ocp-Apim-Subscription-Key": key}}
+    
+    const img_data = data
+    let resp = await axios.post(azure_url,img_data,config)
+    return resp
+    
+}
+
 module.exports = {
     get: get,
-    post: post
+    post: post,
+    img_post: img_post
 }

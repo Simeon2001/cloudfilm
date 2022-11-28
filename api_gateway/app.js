@@ -5,6 +5,7 @@ const { Sequelize, DataTypes } = require('sequelize');
 require("dotenv").config({path: '../.env'})
 const sequelize = new Sequelize(process.env.POSTGRES_URL)
 const views = require('./views');
+const imgdesc = require('./imgdesc');
 const multer = require('multer');
 
 app.use(express.json());
@@ -61,6 +62,18 @@ app.post('/api/savekeys', (req, res) => {
 app.put('/api/savekeys', (req, res) => {
     views.putkey(req, res, db);
 });
+
+app.post('/api/imagedeploy', (req, res) => {
+    image_stream(req, res, (err) => {
+        if (err instanceof multer.MulterError){
+            return res.status(400).json({"status":false,"message":"invalid fieldname or error from your side"}); 
+        } else if (err) {
+            console.log(err);
+        }
+        imgdesc.desc_image(req, res);
+    });
+});
+
 
 
 app.listen(9000, () => console.log("server ready"));
