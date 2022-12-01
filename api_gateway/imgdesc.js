@@ -1,5 +1,6 @@
 const axo = require('./axo');
 
+// function for sending buffer images and get details
 const desc_image = async (req,res) => {
     const files  = req.file.mimetype.split('/')[0];
     if (files != "image" | files === null ) {
@@ -7,8 +8,12 @@ const desc_image = async (req,res) => {
     } else{
         img_buf = req.file.buffer
         img_name = req.file.originalname
-        img_base = img_buf.toString('base64')
-        await axo.img_post(img_base)
+        img_resp = await axo.img_post(img_buf)
+        infos = img_resp.data.tags
+       
+        console.log(infos)
+        
+        return res.status(200).json({"status": true,});
     }
 
 }

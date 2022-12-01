@@ -13,6 +13,8 @@ headers["Authorization"] = os.getenv("AUTH_TOKEN")
 
 url = os.getenv("SAFE_KEY_URL")
 
+
+# function for updating microservice database apikey
 def putkey(old_priv,enc_priv,enc_pub):
     data = {"oldpriv_key": old_priv, 
             "enc_priv_key": enc_priv,

@@ -1,5 +1,6 @@
 const axo = require('./axo');
 
+// logic function to save api keys
 const savekey = async (req, res, db) => {
     if (req.headers.authorization == process.env.AUTH_TOKEN){
 
@@ -21,6 +22,7 @@ const savekey = async (req, res, db) => {
 }
 
 
+// logic function to get image saved in a image folder
 const viewimage = async (req,res, hashes, db, idd) => {
     const enc_privkey = await db.findOne({ 
         where: { enc_private: hashes}});
@@ -54,6 +56,7 @@ const viewimage = async (req,res, hashes, db, idd) => {
 }
 
 
+// logic function to upload image to the storage microservice api
 const postviewimage = async (req,res, hashes, db, idd) => {
     if (!req.file){
         return res.status(400).json({"status": false, "message": "nothing was uploaded"});
@@ -95,6 +98,7 @@ const postviewimage = async (req,res, hashes, db, idd) => {
 }
 
 
+// to update apikey stored in all microservice database
 const putkey = async(req, res, db) => {
     if (req.headers.authorization == process.env.AUTH_TOKEN){
         const enc_pri_key  = req.body.oldpriv_key;
@@ -109,6 +113,8 @@ const putkey = async(req, res, db) => {
     }else{
         return res.status(406).json({"status": false,"message": "not authenticated"});
     }
+
+    
 }
 module.exports = {
     savekey:savekey,

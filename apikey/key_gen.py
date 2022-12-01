@@ -9,18 +9,21 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+# encode a value + salt
 def key_encode(value, salt):
     dd = str(value) + str(salt)
     m = hashlib.sha256(dd.encode("UTF-8")).hexdigest()
     return m[0:42]
 
 
+# function hash tokens
 def hash(key):
     b_key = "Bearer {0}".format(key)
     n = hashlib.sha256(b_key.encode("UTF-8")).hexdigest()
     return n
 
 
+# function generate private key and secret key
 def all_key(email):
     pk_salt = os.getenv("PK_SALT")
     sk_salt = os.getenv("SK_SALT")

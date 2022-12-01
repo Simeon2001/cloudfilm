@@ -1,4 +1,4 @@
-from .models import Folder, FileStorage, UserStorageVolume
+from box.models import Folder, FileStorage, UserStorageVolume
 from rest_framework.decorators import (
     api_view,
     permission_classes,
@@ -9,10 +9,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
-from .serializers import FileSerial
+from box.serializers import FileSerial
 from rest_framework.parsers import FileUploadParser
 from PIL import Image
-from .idd_hash import id_hash
+from box.idd_hash import id_hash
 from folderapp import resp
 from box.uploader import read_image
 
@@ -102,6 +102,7 @@ def delete_file(request, code, idd):
         return resp.not_found("image or album not found")
 
 
+# request function to check your remaining storage space
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def storage_metrics(request):

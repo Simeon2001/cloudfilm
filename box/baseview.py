@@ -9,10 +9,12 @@ from rest_framework.decorators import (api_view, authentication_classes,
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.parsers import FileUploadParser
-from .idd_hash import id_hash
-from .models import FileStorage, Folder, UserStorageVolume
+from box.idd_hash import id_hash
+from box.models import FileStorage, Folder, UserStorageVolume
 from box.uploader import read_image
 
+
+# request function to save base64 image from internal microservice api
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def upload_basefile(request, code):
@@ -21,7 +23,7 @@ def upload_basefile(request, code):
         folder = Folder.objects.get(code=code)
         update_volume = UserStorageVolume.objects.get(user=folder.user)
 
-        # Post request: to add new image to album
+# Post request: to add new image to album
         if request.method == "POST":
             try:
                 image = request.data.get("imgbase")
@@ -45,6 +47,7 @@ def upload_basefile(request, code):
                         print(byte_size)
                         print(new_volume)
 
+# get image details using ML
                         descrpt = read_image(img)
                         print(img.verify())
                         print(img_name)
@@ -68,7 +71,9 @@ def upload_basefile(request, code):
 
     except:
         return resp.not_found("image album not found")            
-            
+
+
+# testing function            
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
 @parser_classes([FileUploadParser])

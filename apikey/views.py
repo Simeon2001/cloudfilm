@@ -7,16 +7,19 @@ from rest_framework.decorators import (
     permission_classes,
     authentication_classes,
 )
-from .models import Keys
+from apikey.models import Keys
 from folderapp import resp
-from .key_gen import all_key
+from apikey.key_gen import all_key
 from apikey.microreq import putkey
 
 
+# function to get and update apikeys
 @api_view(["get", "put"])
 @permission_classes([IsAuthenticated])
 def get_apikey(request):
     current_user = request.user
+
+# to update your apikey
     if request.method == "PUT":
         user_email = current_user.email
         up_apikey = all_key(user_email)
@@ -54,6 +57,7 @@ def get_apikey(request):
         except:
             return resp.not_found("user not found")
 
+# to get apikey per user
     else:
         try:
             keys = Keys.objects.get(user=current_user)
