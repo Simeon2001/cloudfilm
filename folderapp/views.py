@@ -21,7 +21,7 @@ from folderapp import resp
 def index(request):
     user = request.user
 
-    # Post request to create new image album
+# Post request to create new image album
     if request.method == "POST":
         folder_name = request.data.get("name")
         code = hashes()
@@ -37,7 +37,7 @@ def index(request):
         serializer_class = FolderSerial(data)
         return Response(serializer_class.data, status=status.HTTP_201_CREATED)
 
-    # Get request to display all image album created
+# Get request to display all image album created
     else:
         folder = Folder.objects.filter(user=user)
         serializer_class = FolderSerial(folder, many=True)
@@ -50,7 +50,7 @@ def index(request):
 def delete_folder(request, code):
     current_user = request.user
 
-    # Delete request to delete an image album
+# Delete request to delete an image album
     if request.method == "DELETE":
         try:
             del_folder = Folder.objects.get(code=code)
@@ -62,7 +62,7 @@ def delete_folder(request, code):
         except Folder.DoesNotExist:
             return resp.not_found("album not found")
 
-    # Put request to update image album visibility and who can upload
+# Put request to update image album visibility and who can upload
     if request.method == "PUT":
         visible = request.data.get("visible")
         print(visible)

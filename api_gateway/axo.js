@@ -1,4 +1,6 @@
 const axios = require("axios")
+
+// get function to communicate with internal microservice api
 const get = async (auth,url) => {
     const config = {
         method: 'get',
@@ -9,6 +11,8 @@ const get = async (auth,url) => {
     return resp 
 }
 
+
+//  post function to communicate with internal microservice api
 const post = async (auth,url,data,name) => {
     const config = {headers: {'Authorization': auth},};
     up_data = {"imgbase":data,"imgname":name}
@@ -17,9 +21,10 @@ const post = async (auth,url,data,name) => {
 }
 
 
+// post function that communicate with external api
 const img_post = async (data) => {
     const key = process.env.AZURE_KEY
-    const azure_url = process.env.AZURE_URL
+    const azure_url = process.env.AZURE_URL 
     const config = {headers:{"Content-Type":"application/octet-stream", 
                             "Ocp-Apim-Subscription-Key": key}}
     

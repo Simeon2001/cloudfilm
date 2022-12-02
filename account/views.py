@@ -19,6 +19,7 @@ from folderapp import resp
 UserModel = get_user_model()
 
 
+# to create an account
 @api_view(["post"])
 @permission_classes([AllowAny])
 def usercreateview(request):
@@ -41,6 +42,7 @@ def usercreateview(request):
             return Response(serializer_class.data, status=status.HTTP_201_CREATED)
 
 
+# to authenicate user
 @api_view(["post"])
 def authr_token(request):
     if request.method == "POST":

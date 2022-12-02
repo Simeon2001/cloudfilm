@@ -1,23 +1,28 @@
+require("dotenv").config({path: '../.env'})
 const express = require('express');
 const crypto = require('crypto');
 const app = express();
 const { Sequelize, DataTypes } = require('sequelize');
-require("dotenv").config({path: '../.env'})
 const sequelize = new Sequelize(process.env.POSTGRES_URL)
 const views = require('./views');
 const imgdesc = require('./imgdesc');
 const multer = require('multer');
 
 app.use(express.json());
+
+
+// multer code for uploading
 const storage = multer.memoryStorage();
 const uploads = multer({storage});
 const image_stream = uploads.single('imagez');
 
+
+// sequalize code to connect with postgres db
 try {
     sequelize.authenticate();
-    console.log('connceted');
+    console.log('database connected');
 }   catch (error) {
-        console.error('not connceted', error);
+        console.error('not connected', error);
 
 }
 
@@ -27,8 +32,11 @@ const db = require("./models")(sequelize,DataTypes);
 })();
 
 
+// function for hashing
 hash = (key) => crypto.createHash('sha256').update(String(key)).digest('hex');
 
+
+// request function for getting images base on id
 app.get('/api/images/:idd', (req,res) => {
     b = req.headers.authorization;
     const { idd } = req.params;
@@ -38,6 +46,7 @@ app.get('/api/images/:idd', (req,res) => {
 });
 
 
+// request function to add images 
 app.post('/api/images/:idd', (req, res) => {
     image_stream(req, res, (err) => {
         if (err instanceof multer.MulterError){
@@ -55,14 +64,19 @@ app.post('/api/images/:idd', (req, res) => {
 });
 
 
+// request function to save apikeys
 app.post('/api/savekeys', (req, res) => {
     views.savekey(req, res, db);  
 });
 
+
+// request function to update apikeys
 app.put('/api/savekeys', (req, res) => {
     views.putkey(req, res, db);
 });
 
+
+// request function to receive image and send to main ML api
 app.post('/api/imagedeploy', (req, res) => {
     image_stream(req, res, (err) => {
         if (err instanceof multer.MulterError){
@@ -73,7 +87,6 @@ app.post('/api/imagedeploy', (req, res) => {
         imgdesc.desc_image(req, res);
     });
 });
-
 
 
 app.listen(9000, () => console.log("server ready"));
