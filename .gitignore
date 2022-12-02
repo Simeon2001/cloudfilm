@@ -16,3 +16,4 @@ thrash.go
 node_modules
 index.txt
 /testr
+.vscode/settings.json
