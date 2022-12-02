@@ -24,14 +24,14 @@ const savekey = async (req, res, db) => {
 
 // logic function to get image saved in a image folder
 const viewimage = async (req,res, hashes, db, idd) => {
-    const enc_privkey = await db.findOne({ 
-        where: { enc_private: hashes}});
+    const enc_public = await db.findOne({ 
+        where: { enc_public: hashes}});
 
-    if (enc_privkey === null){
+    if (enc_public === null){
         return res.status(406).json({"status": false,"message": "invalid authentication token"});
     
     } else{
-        const auth = "Token" + " " + enc_privkey.token;
+        const auth = "Token" + " " + enc_public.token;
         const url = process.env.IMAGE_STORE + idd;
 
         try {
@@ -48,10 +48,9 @@ const viewimage = async (req,res, hashes, db, idd) => {
                 return res.status(500).json({"status": false,"message": "internal server error"});
             } else {
                 console.log("error");
+                return res.status(500).json({"status": false,"message": "server down"});
             }
         }
-        
-        
     }
 }
 
@@ -90,11 +89,10 @@ const postviewimage = async (req,res, hashes, db, idd) => {
                 return res.status(500).json({"status": false,"message": "internal server error"});
             } else {
                 console.log("error");
+                return res.status(500).json({"status": false,"message": "server down"});
             }
         }
-        
     }
-    
 }
 
 
@@ -113,12 +111,45 @@ const putkey = async(req, res, db) => {
     }else{
         return res.status(406).json({"status": false,"message": "not authenticated"});
     }
-
-    
 }
+
+
+// logic function to check your remaining space
+const metrics = async (res,hashes,db) => {
+    const enc_privkey = await db.findOne({ 
+        where: { enc_private: hashes}});
+    
+    if (enc_privkey === null){
+        return res.status(406).json({"status": false,"message": "invalid authentication token"});
+    
+    }else{
+        const auth = "Token" + " " + enc_privkey.token;
+
+        try {
+            const met_resp = await axo.space(auth);
+
+        if (met_resp.status == 200) {
+            return res.status(200).json(met_resp.data);
+        }
+
+        } catch (err) {
+            if (err.met_resp){
+                return res.status(404).json({"status":false,"message":"not found"});
+            } else if (err.request) {
+                return res.status(500).json({"status": false,"message": "internal server error"});
+            } else {
+                console.log(err);
+                return res.status(500).json({"status": false,"message": "server down"});
+            }
+        }
+    }
+}
+
+
 module.exports = {
     savekey:savekey,
     viewimage:viewimage,
     postviewimage:postviewimage,
-    putkey:putkey
+    putkey:putkey,
+    metrics:metrics
 }

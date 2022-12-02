@@ -89,4 +89,12 @@ app.post('/api/imagedeploy', (req, res) => {
 });
 
 
+// request function to check your remaining space
+app.get('/api/mymetric', (req,res) => {
+    b = req.headers.authorization;
+    hashes = hash(b);
+    views.metrics(res,hashes,db);
+
+});
+
 app.listen(9000, () => console.log("server ready"));
