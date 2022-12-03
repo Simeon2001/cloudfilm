@@ -49,20 +49,23 @@ def upload_file(request, code):
                         print(byte_size)
                         print(new_volume)
 
-                        descrpt = read_image(img)
-                        print(img.verify())
-                        print(image.name)
+                        status, descrpt = read_image(img)
+                        if status != 200:
+                            return resp.down("something wrong")
+                        else:
+                            print(img.verify())
+                            print(image.name)
 
-                        save_image = FileStorage.objects.create(
-                            idd=idd,
-                            folder=folder,
-                            files_name=image.name,
-                            files=image,
-                            image_description=descrpt,
-                        )
-                        update_volume.volume_in_kb = new_volume
-                        update_volume.save()
-                        return resp.accepted("image saved")
+                            save_image = FileStorage.objects.create(
+                                idd=idd,
+                                folder=folder,
+                                files_name=image.name,
+                                files=image,
+                                image_description=descrpt,
+                            )
+                            update_volume.volume_in_kb = new_volume
+                            update_volume.save()
+                            return resp.accepted("image saved")
 
                 return resp.not_yours("sorry you can't upload to this album")
             except:

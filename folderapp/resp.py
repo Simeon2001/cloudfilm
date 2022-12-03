@@ -56,3 +56,10 @@ def bad(msg):
         {"status": False, "message": msg},
         status=status.HTTP_400_BAD_REQUEST,
     )
+
+
+def down(msg):
+    return Response(
+        {"status": False, "message": msg},
+        status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+    )

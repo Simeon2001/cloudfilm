@@ -48,20 +48,23 @@ def upload_basefile(request, code):
                         print(new_volume)
 
 # get image details using ML
-                        descrpt = read_image(img)
-                        print(img.verify())
-                        print(img_name)
+                        status, descrpt = read_image(img)
+                        if status != 200:
+                           return resp.down("something wrong") 
+                        else:
+                            print(img.verify())
+                            print(img_name)
 
-                        save_image = FileStorage.objects.create(
-                            idd=idd,
-                            folder=folder,
-                            files_name=img_name,
-                            files=de_img,
-                            image_description=descrpt,
-                        )
-                        update_volume.volume_in_kb = new_volume
-                        update_volume.save()
-                        return resp.accepted("image saved")
+                            save_image = FileStorage.objects.create(
+                                idd=idd,
+                                folder=folder,
+                                files_name=img_name,
+                                files=de_img,
+                                image_description=descrpt,
+                            )
+                            update_volume.volume_in_kb = new_volume
+                            update_volume.save()
+                            return resp.accepted("image saved")
 
                 return resp.not_yours("sorry you can't upload to this album")
             except:
